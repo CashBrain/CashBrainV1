@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "QuizDemo";
+    
+}
+@{
+    Layout = "~/Views/Shared/_Customerlayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <script src="~/Js/Quiz.js"></script>
+    <script src="~/Js/view.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    
+    
+
+    <link href="~/Css/Quiz.css" rel="stylesheet" />
+    <script type="text/javascript">
+        window.onload = function () {
+             loadDatacustomer();            
+             count = 20;
+            countdown();
+
+        };
+        </script>
+</head>
+<body>
+    <br/>
+    <br />
+    <br />
+    <div class="container">
+        <div class="col-lg-2">
+            <span style="color:darkorange;font-size:18px;">Seconds Left -- </span>
+              <span class="timech" id="timer"></span>
+        </div>
+        <br/>
+        <br />
+        <div id="maindata">
+
+            @*<div class="col-lg-12">
+                <br />
+                <div class="col-lg-12">
+                    <div class="col-lg-8 questiondiv">
+                        Q1.  Questions Questions Questions Questions Questions Questions
+
+                    </div>
+
+                </div>
+            </div>
+            <br /><br /><br /><br /><br />
+               <div class="col-lg-6">
+                   <table>
+                       <tr>
+                           <td><button class="button" value="choice 1"  onclick="changeanswerfrequently(this.value)">choice 1</button></td>
+                           <td><button class="button" value="choice 2" onclick="changeanswerfrequently(this.value)">choice 2</button></td>
+                       </tr>
+                       <tr>
+                           <td><button class="button" value="choice 3"  onclick="changeanswerfrequently(this.value)">choice 3</button></td>
+                           <td><button class="button" value="choice 4"  onclick="changeanswerfrequently(this.value)">choice 4</button></td>
+                       </tr>
+                   </table>
+                   </div>
+            <div class="col-lg-3">
+                <div  class="displaycontent1">
+
+                    <div id="displaycontent" class="innerTEXT">11</div>
+                </div>
+            </div>
+            <br/>
+            <br />
+            <br />
+            <br />
+            <br />*@
+                   @*<div class="col-lg-12">
+                                          <div id="Choice1" class="col-lg-2">
+                <button class="button">choice 1</button>
+            </div>
+                       <br /><br />
+                       <div id="Choice2" class="col-lg-2">
+                           <button class="button">choice 2</button>
+                       </div>
+                       <br /><br />
+                       <div id="Choice3" class="col-lg-2 ">
+                           <button class="button">choice 2</button>
+                       </div>
+                       <br /><br />
+                       <div id="Choice4" class="col-lg-2">
+                           <button class="button">choice 2</button>
+                       </div>
+                   </div>*@
+
+        </div>
+        <br/>
+        <br/>
+        <br />
+       <div class="col-lg-12">
+           <div class="col-lg-6">
+               <div class="btn btn-default col-lg-3" onclick="changequestion()">
+                   <span>Next</span>
+               </div>
+               <div class="btn btn-default col-lg-3" onclick="PreviousQuestion()">
+                   <span>Back</span>
+               </div>
+           </div>
+       </div>
+        <div class="col-lg-12" id="Finalanswercount" style="visibility:hidden" onclick="calulateAnswer()">
+            <div class="col-lg-6">
+                <div class="btn btn-default col-lg-6">
+                    <span>Submit</span>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+    <div id="secondcalcalulate" style="visibility:hidden">20</div>
+    <div id="calquestioncount" style="visibility:hidden">0</div>
+    <div id="calqcount" style="visibility:hidden">0</div>
+    <div id="UserAnswer" style="visibility:hidden"> Wrong</div>
+</body>
+
+</html>

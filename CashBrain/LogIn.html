@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="padding-top:20px;">
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="well">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <td colspan="2">
+                            Existing User Login
+                            <a class="btn btn-success pull-right" href="Register.html">Register</a>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>UserName</td>
+                        <td><input type="text" id="txtUsername" placeholder="Username" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="password" id="txtPassword" placeholder="Password" /></td>
+                    </tr>                   
+                    <tr>
+                        <td colspan="2"><input type="button" id="btnLogIn" class="btn btn-success" value="LogIn" /></td>
+                    </tr>
+
+                </tbody>
+            </table>     
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <td colspan="2">
+                            Social Logins                           
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        
+                        <td><input type="button" id="btnGoogleLogIn" value="Google Log In" class="btn btn-success" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="button" id="btnFacbookLogin" value="Facebook Log In" class="btn btn-success" /></td>
+                    </tr>
+                </tbody>
+            </table>     
+            <div id="divError" class="alert alert-danger collapse">
+                <a id="linkClose" class="close" href="#">&times;</a>
+                <div id="divErrorText">
+
+                </div>
+            </div>
+        </div>
+        </div>
+        <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/GoogleAuthentication.js"></script>
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                getAccessToken();
+
+                $("#btnFacbookLogin").click(function () {
+                    window.location.href = "/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=http%3A%2F%2Flocalhost%3A62809%2FLogIn.html&state=asif9c8oVTknd4bvTjXh4MzYQWad7P3SF7_MaLqwwBk1";
+                })
+
+                $("#btnGoogleLogIn").click(function () {
+                    window.location.href = "/api/Account/ExternalLogin?provider=Google&response_type=token&client_id=self&redirect_uri=http%3A%2F%2Flocalhost%3A62809%2FLogIn.html&state=asif9c8oVTknd4bvTjXh4MzYQWad7P3SF7_MaLqwwBk1";
+                })
+                $("#linkClose").click(function () {
+                    $("#divErrorText").hide("fade");
+                })
+                $("#btnLogIn").click(function () {
+                    debugger;
+                    $.ajax({
+                        url: '/token',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: {
+                            username: $("#txtUsername").val(),
+                            password:$("#txtPassword").val(),
+                            grant_type: 'password'
+                        },
+                        success: function (response) {
+                           // $("#divErrorText").text(JSON.stringify(response));
+                            localStorage.setItem("accessToken", response.access_token);
+                            localStorage.setItem("userName", response.userName);
+                            window.location.href = "EmployeeDetail.html"
+
+                            $("#divErrorText").text(JSON.stringify(response));
+                            $("#divError").show("fade");
+                            
+                        },
+                        error:function(jqXHR){
+                         
+                            $("#divErrorText").text(jqXHR.responseText);
+                            $("#divError").show("fade");
+                    }
+                    })
+
+                });
+            });
+        </script>
+</body>
+</html>

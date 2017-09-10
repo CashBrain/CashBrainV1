@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="padding-top:20px;">
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="well">
+            <input type="button" id="btnLoadEmployees" class="btn btn-success" value="Load Employees"/>
+            <span id="spanUserName" class="text-muted"></span>
+            <input type="button" id="btnLogOff" class="btn btn-success pull-right" value="Log Off" />
+        </div>
+        <div class="well hidden" id="divData">
+            <table class="table table-bordered" id="tblData">
+                <thead>
+                    <tr>
+                        <th>EmployeeId</th>
+                        <th>Employee Name</th>
+                        <th>Designation</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade" tabindex="-1" id="errorModal" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4>Session Exipired</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h2>Please close this session to login again</h2>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-success">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div id="divError" class="alert alert-danger collapse">
+                <a id="linkClose" class="close" href="#">&times;</a>
+                <div id="divErrorText">
+
+                </div>
+            </div>
+        
+    </div>
+        <script src="Scripts/jquery-1.10.2.min.js"></script>
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                alert('sdsdsdsd');
+                $("#spanUserName").text('Hello ' + localStorage.getItem('userName'))
+                if (localStorage.getItem('accessToken') == null) {
+                    window.location.href = "Login.html";
+                }
+                $("#linkClose").click(function () {
+                    $("#divErrorText").hide("fade");
+                });
+                $('#errorModal').on('hidden.bs.modal', function () {
+                    window.location.href='login.html'
+                })
+                $("#btnLogOff").click(function () {
+                    localStorage.removeItem('accessToken');
+                    window.location.href = "/login.html";
+                });
+                $("#btnLoadEmployees").click(function () {
+                    $("#tblData > tbody").empty();
+                    debugger;
+                    $.ajax({
+                        url: '/api/employee',
+                        method: 'GET',                        
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('accessToken'),                            
+                        },
+                        success: function (data) {
+                           // $("#divErrorText").text(JSON.stringify(response));
+                            $("#divData").removeClass('hidden');
+                            $.each(data, function (index, value) {
+                                var row = $('<tr><td>' + value.EmployeeId + '</td><td>'
+                                         + value.EmployeeName + '</td><td>'
+                                         + value.Designation + '</td></tr>')
+                                $("#tblData").append(row);
+                            })
+                           
+
+                        },
+                        error:function(jqXHR){
+                            if (jqXHR.status == '401') {
+                                $("#errorModal").modal('show');
+                            }
+                            else {
+                                $("#divErrorText").text(jqXHR.responseText);
+                                $("#divError").show("fade");
+                            }
+                    }
+                    })
+
+                });
+            });
+        </script>
+</body>
+</html>
